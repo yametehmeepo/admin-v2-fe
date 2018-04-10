@@ -1,6 +1,9 @@
 body{
-	background: url(../test/1.jpg);
+	background: #ccc;
 	#app{
-		font-size: 100px;
+		.jsx{
+			color: blue;
+			font-size: 60px;
+		}
 	}
 }

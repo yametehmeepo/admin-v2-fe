@@ -1,3 +1,100 @@
-#app {
-	color: red;
+.logo{
+	width: 100%;
+	padding: 16px 15px;
+	height: 64px;
+	font-size: 26px;
+	line-height: 30px;
+	font-weight: bold;
 }
+.logo a{
+	display: block;
+	color: #fff;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: center;
+	transition: all 0.3s ease-out;
+}
+.logo a:focus{
+	text-decoration: none;
+}
+.logo a:hover{
+	opacity: 0.8;
+}
+.logo a img{
+	width: 32px;
+	vertical-align: middle;
+	margin: -5px 5px 0 0;
+}
+.logo strong{
+	color: #2dafcb;
+	margin-right: 5px;
+}
+.sideToggleIcon{
+	position: absolute;
+	left: 25px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+.sideToggleIcon i{
+	font-size: 16px;
+	cursor: pointer;
+}
+.welcomeAdmin{
+	position: absolute;
+	right: 20px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+.adminButton{
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 16px;
+}
+.headerstyle{
+	position: relative;
+	background: #fff;
+	box-shadow: 0 3px 3px rgba(0,0,0,.05);
+}
+.pageTitle{
+	font-size: 36px;
+	padding-bottom: 9px;
+	margin: 10px 0 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*覆盖antd默认样式*/
+.ant-menu.ant-menu-dark .ant-menu-item-selected, .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected{
+	background: #2dafcb!important;
+}
+.ant-layout-sider{
+	background: #2b2e33!important;
+}
+.ant-menu-dark .ant-menu-inline.ant-menu-sub{
+	background: #17191b!important;
+}
+.ant-menu-dark, .ant-menu-dark .ant-menu-sub{
+	background: #2b2e33!important;
+}
+.ant-menu-vertical .ant-menu-item, .ant-menu-vertical-left .ant-menu-item, .ant-menu-vertical-right .ant-menu-item, .ant-menu-inline .ant-menu-item, .ant-menu-vertical .ant-menu-submenu-title, .ant-menu-vertical-left .ant-menu-submenu-title, .ant-menu-vertical-right .ant-menu-submenu-title, .ant-menu-inline .ant-menu-submenu-title{
+	margin-top: 0!important;
+	margin-bottom: 0!important;
+}
+
+
+
+
+
+
+
+

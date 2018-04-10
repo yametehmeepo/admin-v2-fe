@@ -9,6 +9,12 @@ module.exports = {
 		publicPath: '/dist/',
 		filename: 'js/app.js'
 	},
+	resolve: {
+		alias: {
+			page: path.resolve(__dirname, 'src/page'),
+			component: path.resolve(__dirname, 'src/component'),
+		}
+	},
 	module: {
 		rules: [
 			//react语法处理
@@ -18,7 +24,7 @@ module.exports = {
 				use: {
 					loader: 'babel-loader',
 					options: {
-						presets: ['env','react']
+						presets: ['env', 'react']
 					}
 				}
 			},
@@ -26,9 +32,9 @@ module.exports = {
 			{
 				test: /\.css$/,
 				use: ExtractTextPlugin.extract({
-			        fallback: "style-loader",
-			        use: "css-loader"
-	        	})
+					fallback: "style-loader",
+					use: "css-loader"
+				})
 			},
 			//sass文件的处理
 			{
@@ -41,35 +47,32 @@ module.exports = {
 			//图片配置
 			{
 				test: /\.(png|jpg|gif|svg)$/,
-				use: [
-					{
-						loader: 'url-loader',
-						options: {
-							limit: 8192,
-							name: 'resource/[name].[ext]'
-						}
+				use: [{
+					loader: 'url-loader',
+					options: {
+						limit: 8192,
+						name: 'resource/[name].[ext]'
 					}
-				]
+				}]
 			},
 			//字体配置
 			{
 				test: /\.(woff|woff2|eot|ttf|otf)$/,
-				use: [
-					{
-						loader: 'url-loader',
-						options: {
-							limit: 8192,
-							name: 'resource/[name].[ext]'
-						}
+				use: [{
+					loader: 'url-loader',
+					options: {
+						limit: 8192,
+						name: 'resource/[name].[ext]'
 					}
-				]
+				}]
 			}
 		]
 	},
 	plugins: [
 		//处理html文件
 		new HtmlWebpackPlugin({
-			template: './src/index.html'
+			template: './src/index.html',
+			favicon: './favicon.ico'
 		}),
 		//独立CSS文件
 		new ExtractTextPlugin("css/[name].css"),
@@ -81,6 +84,9 @@ module.exports = {
 		})
 	],
 	devServer: {
-    	port: 8086
-    }
+		port: 8086,
+		historyApiFallback: {
+			index: '/dist/index.html'
+		}
+	}
 };
