@@ -13,6 +13,7 @@ module.exports = {
 		alias: {
 			page: path.resolve(__dirname, 'src/page'),
 			component: path.resolve(__dirname, 'src/component'),
+			util: path.resolve(__dirname, 'src/util'),
 		}
 	},
 	module: {
@@ -42,6 +43,14 @@ module.exports = {
 				use: ExtractTextPlugin.extract({
 					fallback: 'style-loader',
 					use: ['css-loader', 'sass-loader']
+				})
+			},
+			//less文件的处理
+			{
+				test: /\.less$/,
+				use: ExtractTextPlugin.extract({
+					fallback: 'style-loader',
+					use: ['css-loader', 'less-loader']
 				})
 			},
 			//图片配置
@@ -87,6 +96,12 @@ module.exports = {
 		port: 8086,
 		historyApiFallback: {
 			index: '/dist/index.html'
+		},
+		proxy: {
+			'/manage': {
+				target: 'http://admintest.happymmall.com',
+				changeOrigin: true,
+			}
 		}
 	}
 };

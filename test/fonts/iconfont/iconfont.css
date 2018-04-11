@@ -1,0 +1,19 @@
+
+@font-face {font-family: "anticon-custom";
+  src: url('iconfont.eot?t=1523437368091'); /* IE9*/
+  src: url('iconfont.eot?t=1523437368091#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAAUcAAsAAAAAB5gAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADMAAABCsP6z7U9TLzIAAAE8AAAARAAAAFZW7ktFY21hcAAAAYAAAABdAAABhqakBr5nbHlmAAAB4AAAATYAAAE8biFoSWhlYWQAAAMYAAAALwAAADYRByRmaGhlYQAAA0gAAAAcAAAAJAfeA4RobXR4AAADZAAAAAwAAAAMC+kAAGxvY2EAAANwAAAACAAAAAgAdgCebWF4cAAAA3gAAAAfAAAAIAESAF1uYW1lAAADmAAAAWAAAAK1dM7HFnBvc3QAAAT4AAAAIwAAADTi9uF7eJxjYGRgYOBikGPQYWB0cfMJYeBgYGGAAJAMY05meiJQDMoDyrGAaQ4gZoOIAgCKIwNPAHicY2Bk/sE4gYGVgYOpk+kMAwNDP4RmfM1gxMjBwMDEwMrMgBUEpLmmMDgwVLyMZm7438AQw9zA0AAUZgTJAQAqWQzKeJzFkNEJgDAMRF/a2g9xED8cSCg4R1fuFPWM9cMJenA5cjlICLAAUTzEBHZhPDjlmvuR1f3kmSw1ArWV3tV/qohm2TWoZKbB5q3+Y/O6j05foQ7qxFZeEm5Aqg0HAAAAeJwVj71OwlAcxe//XvsBQiu3vf2kQKlw1SqR0uIgHw4uEgcTA4mjD6Ari0MXEwcHB5PuxsSBV2DlQYw+gE9QrScnv+13koMEhH4/yZpYSEN7qI/O0RVCIIbQVrAHPo97OATmC8zUFcID7ktBu0fGYLZF3YiGcdcUJVEFBRow8KMh72EOSTzBpxAZHoDtOte0U6fkBcoWbzzmM/wGrBnU1clRfnE41aOWJi8rlNqUPsuiIMgYb6kK3JlGSSiVxfxdUB22bu7jJlRs7lzeVFsuvX2K772OWQJIU9DclvIxrTm1og+OoVFb2qnKllMNdnVYfm9bWsXrfqEi+B/kFa9QGRnFyyAZ8BOzzyROgsSv+cmAFcQ/m83xKMtGbJGvYL7ICw/O5v1RBtkY3IM8DFOcFkt/KnA0HAAAeJxjYGRgYABijeUr18Xz23xl4GZhAIFrnz9YIOj/D1kYmCWAXA4GJpAoAFMWC8IAeJxjYGRgYG7438AQw8IAAkCSkQEVMAMARwkCbAQAAAAD6QAABAAAAAAAAAAAdgCeeJxjYGRgYGBmCGRgZQABJiDmAkIGhv9gPgMAEPcBcAB4nH2SPU7DQBCFn/OHcAQFCKoUKyEhERTnp0JpKCIlNSnSUCDHWSeObK+13kTKFbgDh+AU3IKGE3ADHvamSIrY2tlv3sxbz0oGcIVvOCifG66SHVwyK7mCM9xZrlJvW66RnyzX0cTYcoP6i2UXj3iz3MQ13nmCUztn1saHZQctfFmu0PtjuUr913INLefCch23zoPlBvVnyy5mzqvlJu6dT3ekpW/kQsx3IgpUGqrUuH5q/rkTbHKjkqlcbmJfH4qH2UzqPFKp6Hu9w8JEplLvz8+3y4ExoQi1SsSYH5JxrESm1VoGxlsZkw273dDqXqASjjuChoQPw7iAwBw7xggBFFKERTTs84t9r3e4b5BTUUgwpXfJPGaXPtl5qjbjKZpZVNQE+vDQO+mY0JEWruP5c2w50YCq4R0Ely4cgj9IeSPJaWOyQFbU1lQC6h5WhSvDEF2+4VG/V0yS/AFyuoHOeJxjYGKAAC4G7ICZkYmRmZGFgbGCLSc/Pb+0hIEBABZTAzUA') format('woff'),
+  url('iconfont.ttf?t=1523437368091') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1523437368091#anticon-custom') format('svg'); /* iOS 4.1- */
+}
+
+.anticon-custom {
+  font-family:"anticon-custom" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.anticon-logout:before { content: "\e95b"; }
+
