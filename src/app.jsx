@@ -8,6 +8,9 @@ import Product from 'page/product/index.jsx';
 import ProductCatagory from 'page/product-catagory/index.jsx';
 import Order from 'page/order/index.jsx';
 import User from 'page/user/index.jsx';
+import ErrorPage from 'page/error/index.jsx';
+//import MUtil from 'util/mm.jsx';
+//import './reset.css';
 import 'antd/dist/antd.css';
 //import '../test/css/icon.less'
 import './index.css';
@@ -22,10 +25,11 @@ class App extends React.Component {
 						<BasicLayout>
 							<Switch>
 								<Route exact path="/" component={Home} />
-								<Route path="/product" component={Product} />
-								<Route path="/product-catagory" component={ProductCatagory} />
-								<Route path="/order" component={Order} />
-								<Route path="/user" component={User} />
+								<Route exact path="/product" component={Product} />
+								<Route exact path="/product-catagory" component={ProductCatagory} />
+								<Route exact path="/order" component={Order} />
+								<Route exact path="/user" component={User} />
+								<Route component={ErrorPage} />
 							</Switch>
 						</BasicLayout>
 					)} />

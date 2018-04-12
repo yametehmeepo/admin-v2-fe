@@ -1,8 +1,10 @@
 import React,{ Component } from 'react';
-import { Layout, Menu, Icon, Dropdown } from 'antd';
+import { Layout, Menu, Icon, Dropdown, message } from 'antd';
 import { Link } from 'react-router-dom';
 import { enquireScreen } from 'enquire-js';
+import PropTypes from 'prop-types';
 import MUtil from 'util/mm.jsx';
+import './index.less';
 
 const { Header, Content, Footer, Sider } = Layout;
 const MenuItem = Menu.Item;
@@ -14,12 +16,11 @@ enquireScreen((b) => {
   console.log(b);
 });
 const openKeysObj = {
-	product: ['sub1-1'],
-	"product-catagory": ['sub1-2'],
-	order: ['sub2-1'],
-	user: ['sub3-1']
+	"/product": ['sub1-1'],
+	"/product-catagory": ['sub1-2'],
+	"/order": ['sub2-1'],
+	"/user": ['sub3-1']
 }
-
 
 
 export default class BasicLayout extends Component {
@@ -29,25 +30,49 @@ export default class BasicLayout extends Component {
 			isMobile: isMobile,
 			collapsed: false,
 			selectedKeys: ['1'],
-			username: MUtil.getStorage('userInfo') ? MUtil.getStorage('userInfo').username : '您'
+			username: MUtil.getStorage('userInfo') === null ? '您' : MUtil.getStorage('userInfo').username,
+			userCount: ' ',
+			productCount: ' ',
+			orderCount: ' ',
+			loginStatus: MUtil.getStorage('loginStatus')
+		}
+	}
+	getChildContext(){
+		return {
+			userCount: this.state.userCount,
+			productCount: this.state.productCount,
+			orderCount: this.state.orderCount
 		}
 	}
 	componentWillMount(){
-		const url = window.location.href;
-		const param = url.split('/').pop();
-		//console.log(param);
-		if(param === ''){
+		this.UrlToSelectedKeys();
+	}
+	componentDidMount(){
+		MUtil.checkStatus('loginStatus').then(() => {
+			//console.log('进来啦');
+			MUtil.getHomeCount().then(res=>{
+				this.setState(res.data.data);
+			}).catch(err=>{console.log(err)});	
+		});
+	}
+	componentWillReceiveProps(){
+		//console.log('componentWillReceiveProps: '+window.location.pathname)
+		this.UrlToSelectedKeys();
+	}
+	UrlToSelectedKeys(){
+		const path = window.location.pathname;
+		if(path === '' || path === '/'){
 			this.setState({
 				selectedKeys: ['1']
 			})
 		}
-		else if(openKeysObj[param]){
+		else if(openKeysObj[path]){
 			this.setState({
-				selectedKeys: openKeysObj[param]
+				selectedKeys: openKeysObj[path]
 			})
 		}else{
 			this.setState({
-				selectedKeys: ['1']
+				selectedKeys: ['']
 			})
 		}	
 	}
@@ -72,15 +97,14 @@ export default class BasicLayout extends Component {
 		window.location.href = '/login';
 	}
 	render(){
-		const { selectedKeys, username } = this.state;
-		const loginStatus = MUtil.getStorage('loginStatus');
+		//console.log('layout', MUtil.getStorage('userInfo'));
+		const { selectedKeys, username, loginStatus } = this.state;
 		const menu = (
 			<Menu onClick={({item, key, keypath}) => this.clickDropdown(item, key, keypath)} style={{width: 260}}>
 				<MenuItem key="1" style={{padding: '15px 20px'}}><Icon type="logout" style={{marginRight: 5}}/><span>退出登录</span></MenuItem>
 			</Menu>
 		)
-		if(loginStatus){
-			return (
+			return ( loginStatus ?
 				<Layout>
 					<Sider 
 						collapsible
@@ -135,11 +159,17 @@ export default class BasicLayout extends Component {
 						</Content>
 					</Layout>
 				</Layout>
-			)	
-		}else{
-			window.location.href = '/login';
-			return null;
-		}
+				:
+				null
+			)
 		
 	}
 }
+
+BasicLayout.childContextTypes = {
+	userCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	productCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	orderCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+}
+
+

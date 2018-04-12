@@ -8,7 +8,8 @@ class LoginForm extends Component {
 	constructor(){
 		super();
 		this.state = {
-			submiting: false
+			submiting: false,
+			redirect: MUtil.getUrlParam('redirect') || '/'
 		}
 	}
 	componentWillMount(){
@@ -31,20 +32,20 @@ class LoginForm extends Component {
 						submiting: false
 					});
 					if(res.data.status === 1){
-						message.error('用户名不存在!');
+						message.error(res.data.msg);
 					}
 					if(res.data.status === 0){
 						message.success('登录成功!');
-						MUtil.setStorage('loginStatus', true);
+						MUtil.setStorage('loginStatus', 1);
 						MUtil.setStorage('userInfo', res.data.data);
-						this.props.history.push('/');
+						this.props.history.push('/');//this.state.redirect
 					}
 				})
 				.catch(err=>{
 					this.setState({
 						submiting: false
 					});
-					console.log(err);
+					//console.log(err);
 					message.success('登录失败!');
 				});
 			}
