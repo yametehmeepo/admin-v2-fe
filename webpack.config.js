@@ -101,6 +101,10 @@ module.exports = {
 			'/manage': {
 				target: 'http://admintest.happymmall.com',
 				changeOrigin: true,
+			},
+			'/user': {
+				target: 'http://admintest.happymmall.com',
+				changeOrigin: true,
 			}
 		}
 	}

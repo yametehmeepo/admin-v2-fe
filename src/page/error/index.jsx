@@ -7,7 +7,7 @@ export default class ErrorPage extends Component {
 		return (
 			<div>
 				<PageTitle title='出错啦!' />
-				<p className="error"><Link to="/">点我返回</Link></p>
+				<p className="error"><Link to="/">点我返回首页</Link></p>
 			</div>
 		)
 	}

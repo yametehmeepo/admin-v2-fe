@@ -36,9 +36,7 @@ class LoginForm extends Component {
 					}
 					if(res.data.status === 0){
 						message.success('登录成功!');
-						MUtil.setStorage('loginStatus', 1);
-						MUtil.setStorage('userInfo', res.data.data);
-						this.props.history.push('/');//this.state.redirect
+						this.props.history.push(this.state.redirect);//this.state.redirect
 					}
 				})
 				.catch(err=>{
@@ -52,6 +50,7 @@ class LoginForm extends Component {
 		});
 	}
 	render(){
+		//console.log('redirect: '+this.state.redirect);
 		const { getFieldDecorator } = this.props.form;
 		const { submiting } = this.state;
 		return (

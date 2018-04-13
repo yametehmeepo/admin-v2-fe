@@ -16,7 +16,7 @@ export default class User extends Component {
 		}
 	}
 	componentDidMount(){
-		MUtil.checkStatus('loginStatus').then(() => {
+		MUtil.checkStatus().then(() => {
 			MUtil.request({
 				type: 'get',
 				url: '/manage/user/list.do',
@@ -58,7 +58,7 @@ export default class User extends Component {
 	}
 	handlePagination(pageNum){
 		//console.log('user-getStorage', MUtil.getStorage('loginStatus'));
-		MUtil.checkStatus('loginStatus').then(() => {
+		MUtil.checkStatus().then(() => {
 			this.setState({
 				pageNum,
 				loading: true,

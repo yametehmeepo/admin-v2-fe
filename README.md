@@ -46,7 +46,7 @@ Form 表单的使用最舒服, 自带的校验规则超级棒
 2.axios.post(url,qs.stringify({a:1,b:2}))	
 </code></pre>
 
-**5.axios二次封装**  
+**5.axios二次封装(用`Promise`对象)**  
 之前一直没有封装常用方法的习惯, 导致有些组件里调用axios的代码非常多  
 将来后台接口格式换一下或者`ajax`库换成`fetch`之类的改起来就会非常麻烦  
 统一将一些常用方法定义在一个文件里, 这里就是**util**下的**mm.jsx**   
@@ -66,8 +66,8 @@ Form 表单的使用最舒服, 自带的校验规则超级棒
 它俩返回的就是promise对象, 所以可以后面.then()接着处理数据了  
 
 <code>这里记录一下当前对登录状态的理解。
-用户登录求求发送到服务器后, 服务器判断账户和密码都对的情况下要记录该用户的登录ID(应该是**sessionID**吧)
-登录状态有一个有效期, 超过一定时间服务端就对删除这个**sessionID**。 当这个**sessionID**被删除后, 用户再操作管理系统
+用户登录求求发送到服务器后, 服务器判断账户和密码都对的情况下要记录该用户的登录ID(应该是**JSESSIONID**吧)
+登录状态有一个有效期, 超过一定时间服务端就对删除这个**JSESSIONID**。 当这个**JSESSIONID**被删除后, 用户再操作管理系统
 遇到发送ajax请求时, 后端就会返回一个未登录的status, 前端就要进行跳转登录页的操作</code>  
 
 **6.antd里的Table组件**  
@@ -79,3 +79,14 @@ Table组件在写用户列表时用到的, 非常好用, 但是API有些多, 后
 **7.encodeURIComponent和decodeURIComponent**  
 `encodeURIComponent`是十六进制的转义序列变为正常字符串  
 `decodeURIComponent`是正常字符串变为十六进制的转义序列
+
+**8.web-storage-cache库**  
+这个插件是在`segmentfault`网站搜到的, 起因是我在本地模拟管理登录状态时, 想通过给`localStorage`添加过期时间  
+然后每次向后台发送请求时,去判断登录状态是否失效, 是的话就弹出提示然后跳转登录页  
+这个库就是**WQTeam**用户封装的库, github地址是:  https://github.com/WQTeam/web-storage-cache  
+具体API可以参考这个网站。  
+**通过向后台发送请求用户数据的方式判断用户登录状态, 不采用localStorage的方式模拟登录状态了**  
+
+**9.**  
+
+

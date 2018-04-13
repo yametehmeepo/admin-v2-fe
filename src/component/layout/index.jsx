@@ -30,11 +30,11 @@ export default class BasicLayout extends Component {
 			isMobile: isMobile,
 			collapsed: false,
 			selectedKeys: ['1'],
-			username: MUtil.getStorage('userInfo') === null ? '您' : MUtil.getStorage('userInfo').username,
+			username: '',
 			userCount: ' ',
 			productCount: ' ',
 			orderCount: ' ',
-			loginStatus: MUtil.getStorage('loginStatus')
+			loginStatus: false
 		}
 	}
 	getChildContext(){
@@ -45,15 +45,21 @@ export default class BasicLayout extends Component {
 		}
 	}
 	componentWillMount(){
+		MUtil.checkStatus().then(res=>{
+			//console.log('layout-componentWillMount')
+			this.setState({
+				username: res.username,
+				loginStatus: true
+			})
+		});
 		this.UrlToSelectedKeys();
 	}
 	componentDidMount(){
-		MUtil.checkStatus('loginStatus').then(() => {
-			//console.log('进来啦');
+			//console.log('进来啦,layout-componentDidMount');
+			//console.log(res);
 			MUtil.getHomeCount().then(res=>{
 				this.setState(res.data.data);
-			}).catch(err=>{console.log(err)});	
-		});
+			}).catch(err=>{console.log(err)});
 	}
 	componentWillReceiveProps(){
 		//console.log('componentWillReceiveProps: '+window.location.pathname)
@@ -88,16 +94,11 @@ export default class BasicLayout extends Component {
 	}
 	clickDropdown(item, key, keypath){
 		if(key === '1'){
-			this.logout();
+			MUtil.logout();
 		}
 	}
-	logout(){
-		MUtil.removeStorage('loginStatus');
-		MUtil.removeStorage('userInfo');
-		window.location.href = '/login';
-	}
 	render(){
-		//console.log('layout', MUtil.getStorage('userInfo'));
+		//console.log('进来啦,layout-render');
 		const { selectedKeys, username, loginStatus } = this.state;
 		const menu = (
 			<Menu onClick={({item, key, keypath}) => this.clickDropdown(item, key, keypath)} style={{width: 260}}>
