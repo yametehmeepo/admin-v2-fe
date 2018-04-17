@@ -12,7 +12,7 @@ const MUtil = {
 	logout(){
 		axios.post('/user/logout.do').then(res=>{
 			if(res.data.status === 0){
-				message.success(res.data.msg);
+				message.success('退出成功!');
 				this.doLogin();
 			}else{
 				message.error(res.data.msg);
@@ -33,7 +33,6 @@ const MUtil = {
 				params: param.params,
 				data: paramdata
 			}).then(res=>{
-				//console.log('mutil: ',res.data);
 				if(res.data.status === 0){
 					//console.log('进来啦,MUtil-request');
 					//console.log(res.data.data);
@@ -44,7 +43,7 @@ const MUtil = {
 					message.info('登录超时, 请重新登录!');
 					setTimeout(() => {
 						this.doLogin();
-					}, 2000);
+					}, 1500);
 					//this.doLogin();
 				}else{
 					message.error(res.data.msg);

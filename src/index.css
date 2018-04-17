@@ -79,12 +79,18 @@ body{
 .error{
 	font-size: 16px;
 }
-
-
-
-
-
-
+.rowcss{
+	background: #fff;
+}
+.tableOpearator a{
+	margin-right: 10px;
+}
+.statusBtn{
+	margin-left: 10px;
+}
+.searchProduct{
+	margin: 0 0 20px;
+}
 
 /*覆盖antd默认样式*/
 .ant-menu.ant-menu-dark .ant-menu-item-selected, .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected{
@@ -104,6 +110,18 @@ body{
 	margin-bottom: 0!important;
 }
 
+/*覆盖antd默认样式*/
+
+.ant-table-thead > tr > th{
+	padding: 8px!important;
+	font-size: 16px!important;
+	font-weight: bold!important;
+	background: transparent!important;
+}
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td{
+	padding: 8px!important;
+	font-size: 15px!important;
+}
 
 
 

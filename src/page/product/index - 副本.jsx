@@ -2,7 +2,6 @@ import React,{ Component } from 'react';
 import { Button, Modal,Table, message } from 'antd';
 import { Link } from 'react-router-dom';
 import PageTitle from 'component/page-title/index.jsx';
-import SearchList from 'component/searchlist/index.jsx';
 import MUtil from 'util/mm.jsx';
 
 const confirm = Modal.confirm;
@@ -15,79 +14,46 @@ export default class Product extends Component {
 			dataSource: [],
 			total: '',
 			pageNum: 1,
-			selectType: 'productId',
-			searchText: '',
-			searchTrigger: false,
 		}
 		this.loadProductList = this.loadProductList.bind(this);
 	}
 	componentDidMount(){
-		var _this = this;
+		const { type, url } = this.props;
 		MUtil.checkStatus().then(() => {
-			this.loadProductList({
-				type:'get',
-				url: '/manage/product/list.do',
-				params: {
-					pageNum: _this.state.pageNum
-				}
-			});
+			this.loadProductList();
 		});
 	}
 	handlePagination(pageNum){
-		console.log('searchTrigger', this.state.searchTrigger);
-		console.log('pageNum', pageNum);
-		const { searchText, selectType, searchTrigger } = this.state;
-		var param = {};
-		if(searchTrigger){
-			if(searchText === 'productId'){
-				param = {
-					url: '/manage/product/search.do',
-					params: {
-						productId: searchText,
-						pageNum	
-					}
-				}
-			}else{
-				param = {
-					url: '/manage/product/search.do',
-					params: {
-						productName: searchText,
-						pageNum	
-					}
-				}
-			}
-			
-		}else{
-			param = {
-				url: '/manage/product/list.do',
-				params: {
-					pageNum	
-				}
-			}
-		}
+		//console.log('user-getStorage', MUtil.getStorage('loginStatus'));
 		MUtil.checkStatus().then(() => {
 			this.setState({
 				pageNum,
 				loading: true,
-			}, () =>{
-				MUtil.request(param).then(res=>{
-					res.list.map((item, index) => {
-						item.key = index;
-						var date = new Date(item.createTime);
-						item.createTime = date.toLocaleString();
-					});
-					this.setState({
-						dataSource: res.list,
-						loading: false,
-					});
-				})		
 			});
+			MUtil.request({
+				url: '/manage/product/list.do',
+				params: { pageNum },
+			}).then(res=>{
+				res.list.map((item, index) => {
+					item.key = index;
+					var date = new Date(item.createTime);
+					item.createTime = date.toLocaleString();
+				});
+				this.setState({
+					dataSource: res.list,
+					loading: false,
+				});
+			})	
 		})
 		
 	}
-	loadProductList(param){
-		//console.log('loadProductList-param',param);
-		MUtil.request(param).then(res=>{
+	loadProductList(){
+		MUtil.request({
+			url: '/manage/product/list.do',
+			params: {
+				pageNum: this.state.pageNum
+			}
+		}).then(res=>{
 			if(res.list.length){
 				this.setState({
 					total: res.total
@@ -106,7 +72,6 @@ export default class Product extends Component {
 				this.setState({
 					dataSource: [],
 					loading: false,
-					total: 0,
 				}, () => {
 					document.querySelector('.ant-table-placeholder').innerHTML = '没有请求到任何数据';
 				});	
@@ -115,7 +80,6 @@ export default class Product extends Component {
 			this.setState({
 				dataSource: [],
 				loading: false,
-				total: 0,
 			}, () => {
 				document.querySelector('.ant-table-placeholder').innerHTML = '没有请求到任何数据';
 			});
@@ -140,65 +104,20 @@ export default class Product extends Component {
 						}
 					}).then(res => {
 						console.log('pageNum', _this.state.pageNum);
-						_this.loadProductList({
-							type:'get',
-							url: '/manage/product/list.do',
-							params: {
-								pageNum: _this.state.pageNum
-							}
-						});
+						_this.loadProductList();
 					})
 				})
 			},
 			onCancel() {},
 		});
 	}
-	searchHandler(param){
-		param.params.pageNum = 1;
-		//console.log('param',param);
-		this.setState({
-			pageNum: 1
-		}, () => {
-			this.loadProductList(param);
-		})
-	}
-	selectTypeChange(value){
-		this.setState({
-			selectType: value
-		});	
-	}
-	searchTextChange(value){
-		this.setState({
-			searchText: value
-		});	
-	}
-	searchTriggerChange(flag){
-		this.setState({
-			searchTrigger: flag
-		});	
-	}
-	cancelSeach(){
-		this.setState({
-			searchTrigger: false,
-			pageNum: 1,
-			loading: true,
-			searchText: '',
-			selectType: 'productId',
-		}, ()=>{
-			this.loadProductList({
-				url: '/manage/product/list.do',
-				params: { pageNum: 1 },
-			})
-		});	
-	}
 	render(){
-		const { dataSource, total, pageNum, loading, selectType, searchText, searchTrigger } = this.state;
+		const { dataSource, total, pageNum, loading } = this.state;
 		const pagination = {
 			showQuickJumper: true,
 			defaultCurrent: 1,
 			total: total,
 			current: pageNum,
-			hideOnSinglePage: true,
 			onChange: ((pageNum)=>{this.handlePagination(pageNum)}),
 		};
 		const defaultProps = {
@@ -264,16 +183,6 @@ export default class Product extends Component {
 		return (
 			<div>
 				<PageTitle title="商品管理" />
-				<SearchList 
-					searchHandler={(param) =>this.searchHandler(param)}
-					searchTextChange={(value) => this.searchTextChange(value)}
-					selectTypeChange={(value) => this.selectTypeChange(value)}
-					searchTriggerChange={(flag) => this.searchTriggerChange(flag)}
-					cancelSeach={() => this.cancelSeach()}
-					selectType={selectType} 
-					searchText={searchText} 
-					searchTrigger={searchTrigger}
-				/>
 				<Table 
 					className={tableClassName}
 					bordered 

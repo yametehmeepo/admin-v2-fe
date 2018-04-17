@@ -110,8 +110,8 @@ export default class BasicLayout extends Component {
 					<Sider 
 						collapsible
 						collapsed={this.state.collapsed}
-						width={260} 
-						style={{height: '100vh'}}
+						width={260}
+						style={{minHeight: '100vh'}}
 						trigger={null}
 						breakpoint="lg"
 						onCollapse={()=>{this.sideToggle()}}
