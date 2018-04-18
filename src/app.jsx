@@ -6,6 +6,7 @@ import Login from 'page/login/index.jsx';
 import Home from 'page/home/index.jsx';
 import Product from 'page/product/index.jsx';
 import ProductCatagory from 'page/product-catagory/index.jsx';
+import ProductSave from 'page/product/save/index.jsx';
 import Order from 'page/order/index.jsx';
 import User from 'page/user/index.jsx';
 import ErrorPage from 'page/error/index.jsx';
@@ -27,6 +28,7 @@ class App extends React.Component {
 								<Route exact path="/" component={Home} />
 								<Route exact path="/product" component={Product} />
 								<Route exact path="/product-catagory" component={ProductCatagory} />
+								<Route exact path="/product/save" component={ProductSave} />
 								<Route exact path="/order" component={Order} />
 								<Route exact path="/user" component={User} />
 								<Route component={ErrorPage} />

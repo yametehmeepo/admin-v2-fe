@@ -79,11 +79,9 @@ Table组件在写用户列表时用到的, 非常好用, 但是API有些多, 后
 在开发商品管理时, 因为之前的用户列表开发使用`Table`组件, 发现用户列表和商品管理页面布局和数据加载方式很相似, 就决定整合`Table`组件为新的组件`TableList`  
 通过向`TableList`传递props来实现请求地址和列表内容渲染的区分, 整合过程中又对Table组件的相关API进行了查阅, 这里记录的要点是:  
 `Table`组件可以有两种写法, 一种是在Table上传递`columns`和`dataSource`两个属性, 另一种则是把`columns`的属性通过  
-<pre><code><Table>
-	<Column />
-	<Column />
-	<Column />
-</Table></code></pre>的方式, 把每一列的相关数据传递到每一个`<Column />`中。  
+<pre><code>&lt;Column&gt;
+&lt;Column&gt;
+&lt;Column&gt;</code></pre>的方式, 把每一列的相关数据传递到每一个`Column`中。  
 这次整合采用了第一种办法。  
 商品管理页在整合TableList时遇到了一些麻烦: **上/下架**的按钮事件是写在父组件`Product`中, 而点击完**上/下架**需要更新列表, 这时候需要重新请求productlist的数据, 但是需要的参数`pageNum`和'dataSource'都定义在`Table`组件里, 本来想着的是点击完**上/下架**后调用`Table`组件的`componentDidMount`生命周期来重新渲染, 一开始没想出来怎么去调用子组件的生命周期, 最后导致只能采取把这两个state放到父组件去处理, 越改发现需要更多相关的改动, 无奈prduct页就没有采用整合办法。  
 后面查到可以用`this.refs.xx`的办法去调用子组件的方法, 就回过头来改, 发现可以调用子组件的生命周期, 特此记录一下。  
@@ -94,7 +92,7 @@ Table组件在写用户列表时用到的, 非常好用, 但是API有些多, 后
 `decodeURIComponent`是正常字符串变为十六进制的转义序列
 
 **8.web-storage-cache库**  
-这个插件是在`segmentfault`网站搜到的, 起因是我在本地模拟管理登录状态时, 想通过给`localStorage`添加过期时间  
+这个插件是在[segmentfault](https://segmentfault.com/)网站搜到的, 起因是我在本地模拟管理登录状态时, 想通过给`localStorage`添加过期时间  
 然后每次向后台发送请求时,去判断登录状态是否失效, 是的话就弹出提示然后跳转登录页  
 这个库就是**WQTeam**用户封装的库, github地址是:  https://github.com/WQTeam/web-storage-cache  
 具体API可以参考这个网站。  
@@ -110,21 +108,74 @@ Table组件在写用户列表时用到的, 非常好用, 但是API有些多, 后
 然后就发现原来`Modal`组件里面有一种用法就是类似`window.confirm()`, 这里记一下用法:  
 **注: 使用 `confirm()` 可以快捷地弹出确认框。`onCancel/onOk` 返回 `promise` 可以延迟关闭**  
 <pre><code>confirm({
-title: 'Do you want to delete these items?',
-content: 'When clicked the OK button, this dialog will be closed after 1 second',
-onOk() {
-  return new Promise((resolve, reject) => {
-    setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-  }).catch(() => console.log('Oops errors!'));
-},
-onCancel() {},
+	title: 'Do you want to delete these items?',
+	content: 'When clicked the OK button, this dialog will be closed after 1 second',
+	onOk() {
+	  return new Promise((resolve, reject) => {
+	    setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+	  }).catch(() => console.log('Oops errors!'));
+	},
+	onCancel() {},
 });</code></pre>  
 
 **11.ES6方式向子组件传递函数**  
 需要注意的是`()=>this.fatherFunction()` 这种方式不要漏掉参数 要写成`(param)=>this.fatherFunction(param)`  
 
-**12.完善优化搜索功能** 
-教程中只有一个查询按钮, 点击后可以按Id或者商品名称查询商品, 如果没有关键字则请求全部商品并渲染, 还存在一个bug:  当选择'按商品名称查询' 然后输入框为空, 点击查询出现数据加载不到显示异常的问题。 我的设计方案是多添加了一个取消查询按钮, 点击可以重新获取整个商品列表, 在点击取消查询后该按钮不可点击, 防止多余请求。  
+**12.完善优化搜索功能**   
+教程中只有一个查询按钮, 点击后可以按Id或者商品名称查询商品, 如果没有关键字则请求全部商品并渲染, 还存在一个bug:  当选择**按商品名称查询** 然后输入框为空, 点击查询出现数据加载不到显示异常的问题。 我的设计方案是多添加了一个取消查询按钮, 点击可以重新获取整个商品列表, 在点击取消查询后该按钮不可点击, 防止多余请求。  
 
+**13.Form里多个Select分别验证**  
+本来antd有一个`Cascader`级联选择的组件可以用作一级和二级商品的联级选择, 我打算一开始用两个`Select`来实现联级选择的, 最开始卡住的地方是这两个`Select`的表单验证必选, 我最开始错误的写法是将两个`Select`写在一个`FormItem`的`getFieldDecorator`里的控件参数的。 导致Form的自带验证对于这两个`Select不好使。  经过查询Form的其中一个例子写法得知, 我这种需求需要把两个`Select`分别写在`FormItem`里, 代码如下:   
+<pre><code><FormItem colon={false} label="所属分类" {...formItemLayout3}>
+	<FormItem className="selectFormItem">
+		{
+			getFieldDecorator('firstProductCateId', {
+				initialValue: '',
+				rules: [{ required: true, message: '请选择一级品类!'}]
+			})(
+				<Select style={{ width: 160, marginRight: 15 }} onChange={(v) => this.firstCategoryChange(v)}>
+					<Option value="">请选择一级品类</Option>
+					{
+						firstCategoryList.map((item, index) => (
+							<Option value={item.id} key={index}>{item.name}</Option>
+						))
+					}
+				</Select>
+			)
+		}
+	</FormItem>
+	{
+		secondCategoryList.length ?
+		<FormItem className="selectFormItem">
+			{
+				getFieldDecorator('secondProductCateId', {
+					initialValue: '',
+					rules: [{ required: true, message: '请选择二级品类!'}]
+				})(
+					<Select style={{ width: 160 }} onChange={(v) => this.secondCategoryChange(v)}>
+						<Option value="">请选择二级品类</Option>
+						{
+							secondCategoryList.map((item, index) => (
+								<Option value={item.id} key={index}>{item.name}</Option>
+							))
+						}
+					</Select>
+				)
+			}
+		</FormItem>	
+		: null
+	}
+</FormItem></code></pre>
 
+**这里需要注意几点：**   
+1.`initialValue`一定要是空字符串, 才能匹配到`Select`里`value=''`的`Option`, 也就是显示出默认选项"请选择一级品类"和"请选择二级品类"  
+2.联级效果采用的是判断是否有第二项来进行加载。  
 
+**14.Cascader联级选择**  
+本以为用`Cascader`做品类的选择, 并带有点击加载附属品类的功能会比上面提到的用两个`Select`简单, 实际操作起来发现有难点, 主要原因是一级和二级品类不是事先定义好的, 是需要从后台获取数据的, 而且有些一级分类没有二级分类, 这就要求`Cascader`可以只选择一级也可以两个品类级别都选择。异步读取是通过`loadData(selectedOptions)`函数, 当`isLeaf: false` 就会触发`loadData` 从而在`loadData`方法中请求下一级数据。 正在加载的小圈圈是通过`selectedOptions`参数: <pre><code>const targetOption = selectedOptions[selectedOptions.length - 1];
+    targetOption.loading = true;</code></pre>
+
+通过`loading`值去显示或隐藏加载小圈圈。`Cascader`的表单验证用自带的就可以  
+
+**15.**   
+  

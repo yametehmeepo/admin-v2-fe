@@ -6,7 +6,10 @@ export default class PageTitle extends Component {
 	}
 	render(){
 		return (
-			<h1 className="pageTitle">{this.props.title}</h1>
+			<div className="pageTitleWrap">
+				<h1 className="pageTitle">{this.props.title}</h1>
+				{this.props.children}
+			</div>
 		)
 	}
 }

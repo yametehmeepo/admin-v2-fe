@@ -59,6 +59,9 @@ body{
 	background: #fff;
 	box-shadow: 0 3px 3px rgba(0,0,0,.05);
 }
+.pageTitleWrap{
+	position: relative;
+}
 .pageTitle{
 	font-size: 36px;
 	padding-bottom: 9px;
@@ -109,6 +112,25 @@ body{
 	margin-top: 0!important;
 	margin-bottom: 0!important;
 }
+.addProductBtn{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+.selectFormItem{
+	display: inline-block!important;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 /*覆盖antd默认样式*/
 
@@ -122,10 +144,33 @@ body{
 	padding: 8px!important;
 	font-size: 15px!important;
 }
+.ant-form-item-label label{
+	font-weight: bold;
+}
+.ant-form-item-label label:after{
+	margin: 0 30px 0 2px;
+}
+.ant-form-item{
+	margin-bottom: 10px;
+}
+.ant-input-group-addon{
+	background-color: #eee;
+}
+.ant-upload-select-picture-card i {
+  	font-size: 32px;
+  	color: #999;
+}
 
+.ant-upload-select-picture-card .ant-upload-text {
+  	margin-top: 8px;
+  	color: #666;
+}
 
-
-
-
-
-
+.ant-cascader-menu{
+	width: 200px!important;
+}
+.ant-cascader-menu-item{
+	width: 100%!important;
+	text-overflow: ellipsis;
+	overflow-x: hidden;
+}

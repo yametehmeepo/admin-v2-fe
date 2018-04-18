@@ -1,5 +1,5 @@
 import React,{ Component } from 'react';
-import { Button, Modal,Table, message } from 'antd';
+import { Button, Modal, Table, message, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import PageTitle from 'component/page-title/index.jsx';
 import SearchList from 'component/searchlist/index.jsx';
@@ -22,13 +22,12 @@ export default class Product extends Component {
 		this.loadProductList = this.loadProductList.bind(this);
 	}
 	componentDidMount(){
-		var _this = this;
 		MUtil.checkStatus().then(() => {
 			this.loadProductList({
 				type:'get',
 				url: '/manage/product/list.do',
 				params: {
-					pageNum: _this.state.pageNum
+					pageNum: this.state.pageNum
 				}
 			});
 		});
@@ -263,7 +262,11 @@ export default class Product extends Component {
 		const { tableClassName, columns } =defaultProps;
 		return (
 			<div>
-				<PageTitle title="商品管理" />
+				<PageTitle title="商品管理">
+					<Link to="/product/save" className="addProductBtn">
+						<Button type='primary'><Icon type="plus" />添加商品</Button>
+					</Link>
+				</PageTitle>
 				<SearchList 
 					searchHandler={(param) =>this.searchHandler(param)}
 					searchTextChange={(value) => this.searchTextChange(value)}

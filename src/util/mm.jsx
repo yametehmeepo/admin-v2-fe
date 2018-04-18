@@ -47,6 +47,7 @@ const MUtil = {
 					//this.doLogin();
 				}else{
 					message.error(res.data.msg);
+					resolve(res.data.msg);
 				}
 			}).catch(err=>{
 				//console.log(err);

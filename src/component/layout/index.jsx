@@ -19,7 +19,8 @@ const openKeysObj = {
 	"/product": ['sub1-1'],
 	"/product-catagory": ['sub1-2'],
 	"/order": ['sub2-1'],
-	"/user": ['sub3-1']
+	"/user": ['sub3-1'],
+	"/product/save": ['sub1-1'],
 }
 
 
