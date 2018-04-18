@@ -125,47 +125,47 @@ Table组件在写用户列表时用到的, 非常好用, 但是API有些多, 后
 教程中只有一个查询按钮, 点击后可以按Id或者商品名称查询商品, 如果没有关键字则请求全部商品并渲染, 还存在一个bug:  当选择**按商品名称查询** 然后输入框为空, 点击查询出现数据加载不到显示异常的问题。 我的设计方案是多添加了一个取消查询按钮, 点击可以重新获取整个商品列表, 在点击取消查询后该按钮不可点击, 防止多余请求。  
 
 **13.Form里多个Select分别验证**  
-本来antd有一个`Cascader`级联选择的组件可以用作一级和二级商品的联级选择, 我打算一开始用两个`Select`来实现联级选择的, 最开始卡住的地方是这两个`Select`的表单验证必选, 我最开始错误的写法是将两个`Select`写在一个`FormItem`的`getFieldDecorator`里的控件参数的。 导致Form的自带验证对于这两个`Select不好使。  经过查询Form的其中一个例子写法得知, 我这种需求需要把两个`Select`分别写在`FormItem`里, 代码如下:   
-<pre><code><FormItem colon={false} label="所属分类" {...formItemLayout3}>
-	<FormItem className="selectFormItem">
+本来antd有一个`Cascader`级联选择的组件可以用作一级和二级商品的联级选择, 我打算一开始用两个`Select`来实现联级选择的, 最开始卡住的地方是这两个`Select`的表单验证必选, 我最开始错误的写法是将两个`Select`写在一个`FormItem`的`getFieldDecorator`里的控件参数的。 导致Form的自带验证对于这两个`Select`不好使。  经过查询Form的其中一个例子写法得知, 我这种需求需要把两个`Select`分别写在`FormItem`里, 代码如下:   
+<pre><code>&lt;FormItem colon={false} label="所属分类" {...formItemLayout3}&gt;
+	&lt;FormItem className="selectFormItem"&gt;
 		{
 			getFieldDecorator('firstProductCateId', {
 				initialValue: '',
 				rules: [{ required: true, message: '请选择一级品类!'}]
 			})(
-				<Select style={{ width: 160, marginRight: 15 }} onChange={(v) => this.firstCategoryChange(v)}>
-					<Option value="">请选择一级品类</Option>
+				&lt;Select style={{ width: 160, marginRight: 15 }} onChange={(v) => this.firstCategoryChange(v)}&gt;
+					&lt;Option value=""&gt;请选择一级品类&lt;/Option&gt;
 					{
 						firstCategoryList.map((item, index) => (
-							<Option value={item.id} key={index}>{item.name}</Option>
+							&lt;Option value={item.id} key={index}&gt;{item.name}&lt;/Option&gt;
 						))
 					}
-				</Select>
+				&lt;/Select&gt;
 			)
 		}
-	</FormItem>
+	&lt;/FormItem&gt;
 	{
 		secondCategoryList.length ?
-		<FormItem className="selectFormItem">
+		&lt;FormItem className="selectFormItem"&gt;
 			{
 				getFieldDecorator('secondProductCateId', {
 					initialValue: '',
 					rules: [{ required: true, message: '请选择二级品类!'}]
 				})(
-					<Select style={{ width: 160 }} onChange={(v) => this.secondCategoryChange(v)}>
-						<Option value="">请选择二级品类</Option>
+					&lt;Select style={{ width: 160 }} onChange={(v) => this.secondCategoryChange(v)}&gt;
+						&lt;Option value=""&gt;请选择二级品类&lt;/Option&gt;
 						{
 							secondCategoryList.map((item, index) => (
-								<Option value={item.id} key={index}>{item.name}</Option>
+								&lt;Option value={item.id} key={index}&gt;{item.name}&lt;/Option&gt;
 							))
 						}
-					</Select>
+					&lt;/Select&gt;
 				)
 			}
-		</FormItem>	
+		&lt;/FormItem&gt;	
 		: null
 	}
-</FormItem></code></pre>
+&lt;/FormItem&gt;</code></pre>
 
 **这里需要注意几点：**   
 1.`initialValue`一定要是空字符串, 才能匹配到`Select`里`value=''`的`Option`, 也就是显示出默认选项"请选择一级品类"和"请选择二级品类"  
@@ -178,4 +178,4 @@ Table组件在写用户列表时用到的, 非常好用, 但是API有些多, 后
 通过`loading`值去显示或隐藏加载小圈圈。`Cascader`的表单验证用自带的就可以  
 
 **15.**   
-  
+
