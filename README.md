@@ -7,6 +7,11 @@
 [后台接口文档](https://gitee.com/imooccode/happymmallwiki/wikis)  
 
 ### 重点:  
+**0.需要优化的地方**   
+a)应该用`Redux`统一管理状态的, 关于`Redux`我本身理解的还是不够, 实践结束需要好好整理这方面的知识, 以备下次实践能顺利的用`Redux`管理状态  
+b)从商品管理的开发开始, 请求后台接口非常频繁, 代码中有大量的`.then`和`setState`后的回调里再请求数据, 代码看着非常笨重, 优化起来还没什么思路, 先把坑放着, 看看后面会不会找到精简代码优化代码的办法  
+
+
 **1.通用布局部分采用antd搭建, 再一次加强对antd的各个组件的使用**  
 组件 `Menu` 的 `defaultOpenKeys` 和 `defaultSelectedKeys` 属性常规时候很好用  
 在点击路由跳转的时候active样式也显示正常, 但是这个项目反复测试发现这两个属性会存在bug:  
@@ -175,7 +180,40 @@ Table组件在写用户列表时用到的, 非常好用, 但是API有些多, 后
 本以为用`Cascader`做品类的选择, 并带有点击加载附属品类的功能会比上面提到的用两个`Select`简单, 实际操作起来发现有难点, 主要原因是一级和二级品类不是事先定义好的, 是需要从后台获取数据的, 而且有些一级分类没有二级分类, 这就要求`Cascader`可以只选择一级也可以两个品类级别都选择。异步读取是通过`loadData(selectedOptions)`函数, 当`isLeaf: false` 就会触发`loadData` 从而在`loadData`方法中请求下一级数据。 正在加载的小圈圈是通过`selectedOptions`参数: <pre><code>const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;</code></pre>
 
-通过`loading`值去显示或隐藏加载小圈圈。`Cascader`的表单验证用自带的就可以  
+通过`loading`值去显示或隐藏加载小圈圈。`Cascader`的表单验证用自带的就可以   
 
-**15.**   
+修改已有商品时, 需要通过`productId`获取该商品的数据。 没有二级品类的话, 直接将`categoryId`的值push进一个空数组`initialValue`中, 有二级品类的话, 需要将`parentCategoryId`和`categoryId`的值push到空数组`initialValue`中然后设置state。 因为`form`中的`Cascader`的默认值需要在`getFieldDecorator`中通过`initialValue`属性赋值的。
+去antd官网多看看`Cascader`的API使用例子: `默认值通过数组的方式指定`。   
 
+**15.Upload上传图片**   
+组件用例介绍部分列出的案例都很好用, 我用的时候如果不考虑上传图片到服务器的具体过程的话, 其他功能都能满足, 但是实际情况是需要一个服务器地址用来保存上传的图片, 这里要用到`action`属性, 这是必选参数:上传地址。 我这里出现一个情况, 点击上传`console`报错500, 我一开始以为跨域的原因, 后来发现我所使用的后台接口地址, 需要一个**文件参数名**, 通过给`Upload`添加`name="upload_file"`属性才可以成功上传到后台。 找到这个原因是通过对比我自己上传图片发送的请求地址`Request Payload` 参数里(headers最下面), 里面有一个`Content-Disposition`, 我这里显示是`form-data; name="file"; filename="1111111.png"` 而教程的预览地址是`form-data; name="upload_file"; filename="1111111.png"
+`就发现了不一样的`name`属性, 最后试着添加了一样的`name`属性就可以上传了。 回过头又去查阅了一下`Upload`的API, 找到了关于`name`属性的解释, 以后做上传文件的时候一定要注意到这个属性是否和后台提供的参数名一样。 
+
+默认上传图片一定要是下面这个格式, 否则会加载不了:  
+<pre><code>{
+	uid: -1,
+	name: 'xxx.png',
+	status: 'done',
+	url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+}</code></pre> 
+
+**16.Form表单验证rules里的pattern属性**   
+`pattern`属性是用来通过正则表达式验证控件的输入值, 要注意的是,pattern: 后面的正则表达式不要用引号包起来  
+
+**17.向state(数组)中push一个对象**  
+切记不能直接用`this.state.arr.push({a:1})`这种方式去push,因为它返回的是数组长度。要先`let newarr = this.state.arr`定义一个变量存储`state`的数组, 然后向`newarr`中`push` 这样再把`newarr`赋给`arr`  
+
+**18.simditor富文本插件**  
+`[simditor](http://simditor.tower.im/)`这个插件是跟着教程学着将其用到自己项目中, 官方文档需要多看看, 主要是初始化和获取值是如何实现的, 而且本插件依赖`jQuery`在模版`index.html`中需要引入jQuery的js文件, 否则会提示`$`未定义, 监听富文本内容事件是通过`jQuery`的`.on('valuechanged', (e) => {})`实现的, 在后面的回调函数里将值传递到使用它的父组件中
+
+**19.react-router v4 可选参数**   
+`path`的写法`path="/product/save/:id?"`  要注意到后面的问号, 代表可选参数, 否则访问`/product/save/` 加载不了组件  
+
+**20.修改商品**   
+数据回填的时候, 一共有这几个数据需要回填: `商品名称`,  `商品描述`,  `所属分类`,  `商品价格`,  `商品库存`,  `商品图片`,  `商品详情`  
+其中`所属分类`, `商品图片`,  `商品详情` 这三部分较复杂。 如果用`Cascader`实现品类分级的话,参照**14**条去做, 如果是`Select`做的话会相对简单些。 `商品图片`一定要参照**15**条的格式写。  `商品详情`则是通过向`RichEditor`组件传值`defaultDetail` 然后在`RichEditor`组件的`componentWillReceiveProps`生命周期中判断新旧`defaultDetail`不一样的时候通过`setValue`方法将传递进来的`defaultDetail`设置成富文本的值   
+
+**21.修改商品的上传图片**   
+这部分在商品管理开发完成后最后测试的时候发现了bug, 修改一个商品时, 之前上传过的图片不能正常显示出来。 原因是`Upload`的上传图片的数据格式比较复杂, 有效的图片地址是`fileList.response.data.url`的值, 而最后提交的时候上传图片的参数是`subImages` 所以从`fileList`转换到`subImages`费了一番功夫。 最后提交的时候需要将`subImages`的数组转化成字符串, 用的是`getSubImages`方法, 提交时候的参数: 修改商品的话就参数多一个`id`, 其它部分的参数和新增商品一样  
+
+**22.**   

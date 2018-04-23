@@ -39,6 +39,8 @@ class ProductSaveForm extends Component {
 				//console.log(res);
 				this.setState({
 					firstCategoryList: res
+				}, () => {
+					console.log('firstCategoryList', this.state.firstCategoryList);
 				})
 			}).catch((err) => {
 				console.log(err);

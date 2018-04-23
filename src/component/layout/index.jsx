@@ -21,6 +21,8 @@ const openKeysObj = {
 	"/order": ['sub2-1'],
 	"/user": ['sub3-1'],
 	"/product/save": ['sub1-1'],
+	"/product": ['sub1-1'],
+	"/product/detail": ['sub1-1'],
 }
 
 
@@ -47,7 +49,6 @@ export default class BasicLayout extends Component {
 	}
 	componentWillMount(){
 		MUtil.checkStatus().then(res=>{
-			//console.log('layout-componentWillMount')
 			this.setState({
 				username: res.username,
 				loginStatus: true
@@ -56,28 +57,38 @@ export default class BasicLayout extends Component {
 		this.UrlToSelectedKeys();
 	}
 	componentDidMount(){
-			//console.log('进来啦,layout-componentDidMount');
-			//console.log(res);
 			MUtil.getHomeCount().then(res=>{
 				this.setState(res.data.data);
 			}).catch(err=>{console.log(err)});
 	}
 	componentWillReceiveProps(){
-		//console.log('componentWillReceiveProps: '+window.location.pathname)
 		this.UrlToSelectedKeys();
 	}
 	UrlToSelectedKeys(){
 		const path = window.location.pathname;
+		const lastIndex = path.lastIndexOf('/');
+		const savepath = path.substring(0,lastIndex);
+		//如果路由为根路由
 		if(path === '' || path === '/'){
 			this.setState({
 				selectedKeys: ['1']
 			})
 		}
+		//如果openKeysObj对象中有path属性
 		else if(openKeysObj[path]){
 			this.setState({
 				selectedKeys: openKeysObj[path]
+			});
+			return
+		}
+		//如果openKeysObj对象中有处理过后的savepath属性
+		else if(openKeysObj[savepath]){
+			this.setState({
+				selectedKeys: openKeysObj[savepath]
 			})
-		}else{
+		}
+		//如果都不符合
+		else{
 			this.setState({
 				selectedKeys: ['']
 			})

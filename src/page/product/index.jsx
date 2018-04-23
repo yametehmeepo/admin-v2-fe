@@ -38,12 +38,12 @@ export default class Product extends Component {
 		const { searchText, selectType, searchTrigger } = this.state;
 		var param = {};
 		if(searchTrigger){
-			if(searchText === 'productId'){
+			if(selectType === 'productId'){
 				param = {
 					url: '/manage/product/search.do',
 					params: {
 						productId: searchText,
-						pageNum	
+						pageNum: pageNum
 					}
 				}
 			}else{
@@ -51,7 +51,7 @@ export default class Product extends Component {
 					url: '/manage/product/search.do',
 					params: {
 						productName: searchText,
-						pageNum	
+						pageNum: pageNum
 					}
 				}
 			}
@@ -60,13 +60,13 @@ export default class Product extends Component {
 			param = {
 				url: '/manage/product/list.do',
 				params: {
-					pageNum	
+					pageNum: pageNum
 				}
 			}
 		}
 		MUtil.checkStatus().then(() => {
 			this.setState({
-				pageNum,
+				pageNum: pageNum,
 				loading: true,
 			}, () =>{
 				MUtil.request(param).then(res=>{
@@ -139,13 +139,7 @@ export default class Product extends Component {
 						}
 					}).then(res => {
 						console.log('pageNum', _this.state.pageNum);
-						_this.loadProductList({
-							type:'get',
-							url: '/manage/product/list.do',
-							params: {
-								pageNum: _this.state.pageNum
-							}
-						});
+						_this.handlePagination(_this.state.pageNum);
 					})
 				})
 			},
@@ -253,8 +247,8 @@ export default class Product extends Component {
 				key: 'operator',
 				render: (text, item, index) => (
 					<div className="tableOpearator">
-						<Link to={`/product/${item.id}`}>查看</Link>
-						<Link to={`/product/save`}>编辑</Link>
+						<Link to={`/product/detail/${item.id}`}>查看</Link>
+						<Link to={`/product/save/${item.id}`}>编辑</Link>
 					</div>
 				)
 			}]

@@ -71,7 +71,11 @@ class SearchListForm extends Component {
 					</FormItem>
 					<FormItem>
 						{
-							getFieldDecorator('searchText')(
+							getFieldDecorator('searchText', {
+								rules: [{
+									required: true, message: '请输入关键字!'
+								}]
+							})(
 								<Input name="searchInput" onChange={(e, value) => this.onInputChange(e, value)} placeholder="关键字"  style={{width: 160}}/>
 							)
 						}

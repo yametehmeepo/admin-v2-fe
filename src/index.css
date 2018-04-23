@@ -94,6 +94,28 @@ body{
 .searchProduct{
 	margin: 0 0 20px;
 }
+.detailContent{
+	width: 100%;
+}
+.detailContent img{
+	max-width: 500px;
+	height: auto;
+}
+
+
+
+
+/*覆盖simditor默认样式*/
+.simditor .simditor-body img, .editor-style img{
+	max-width: 100%;
+	height: auto;
+	margin: 0;
+}
+.simditor .simditor-body, .editor-style{
+	overflow: auto;
+}
+
+
 
 /*覆盖antd默认样式*/
 .ant-menu.ant-menu-dark .ant-menu-item-selected, .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected{
@@ -120,19 +142,6 @@ body{
 .selectFormItem{
 	display: inline-block!important;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-/*覆盖antd默认样式*/
 
 .ant-table-thead > tr > th{
 	padding: 8px!important;
@@ -174,3 +183,21 @@ body{
 	text-overflow: ellipsis;
 	overflow-x: hidden;
 }
+
+.anticon-delete{
+	display: none!important;
+}
+.ant-cascader-picker-disabled{
+	background: #fff;
+}
+.ant-input-disabled {
+    color: rgba(0, 0, 0, 0.65)!important;
+}
+.ant-cascader-picker-disabled{
+    color: rgba(0, 0, 0, 0.65)!important;
+}
+
+
+
+
+
