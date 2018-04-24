@@ -211,7 +211,7 @@ Table组件在写用户列表时用到的, 非常好用, 但是API有些多, 后
 
 **20.修改商品**   
 数据回填的时候, 一共有这几个数据需要回填: `商品名称`,  `商品描述`,  `所属分类`,  `商品价格`,  `商品库存`,  `商品图片`,  `商品详情`  
-其中`所属分类`, `商品图片`,  `商品详情` 这三部分较复杂。 如果用`Cascader`实现品类分级的话,参照**14**条去做, 如果是`Select`做的话会相对简单些。 `商品图片`一定要参照**15**条的格式写。  `商品详情`则是通过向`RichEditor`组件传值`defaultDetail` 然后在`RichEditor`组件的`componentWillReceiveProps`生命周期中判断新旧`defaultDetail`不一样的时候通过`setValue`方法将传递进来的`defaultDetail`设置成富文本的值   
+其中`所属分类`, `商品图片`,  `商品详情` 这三部分较复杂。 如果用`Cascader`实现品类分级的话,参照**14**条去做, 如果是`Select`做的话会相对简单些。 `商品图片`一定要参照**15**条的格式写。  `商品详情`则是通过向`RichEditor`组件传值`defaultDetail` 然后在`RichEditor`组件的`componentWillReceiveProps`生命周期中判断新旧`defaultDetail`不一样的时候通过`setValue`方法将传递进来的`defaultDetail`设置成富文本的值。之所以不用`detail`而是用`defaultDetail`是因为如果用`detail`会造成, 富文本每次编辑都会通过`detail`重新设置富文本内容, 导致光标始终在文字前面。  
 
 **21.修改商品的上传图片**   
 这部分在商品管理开发完成后最后测试的时候发现了bug, 修改一个商品时, 之前上传过的图片不能正常显示出来。 原因是`Upload`的上传图片的数据格式比较复杂, 有效的图片地址是`fileList.response.data.url`的值, 而最后提交的时候上传图片的参数是`subImages` 所以从`fileList`转换到`subImages`费了一番功夫。 最后提交的时候需要将`subImages`的数组转化成字符串, 用的是`getSubImages`方法, 提交时候的参数: 修改商品的话就参数多一个`id`, 其它部分的参数和新增商品一样  

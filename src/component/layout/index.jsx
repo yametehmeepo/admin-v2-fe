@@ -37,7 +37,8 @@ export default class BasicLayout extends Component {
 			userCount: ' ',
 			productCount: ' ',
 			orderCount: ' ',
-			loginStatus: false
+			loginStatus: false,
+			openKeys: []
 		}
 	}
 	getChildContext(){
@@ -109,6 +110,17 @@ export default class BasicLayout extends Component {
 			MUtil.logout();
 		}
 	}
+	onOpenChange(openKeys){
+		const rootSubmenuKeys = ['sub1', 'sub2', 'sub3'];
+		const latestOpenKey = openKeys.find(key => this.state.openKeys.indexOf(key) === -1);
+	    if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+	      this.setState({ openKeys });
+	    } else {
+	      this.setState({
+	        openKeys: latestOpenKey ? [latestOpenKey] : [],
+	      });
+	    }
+	}
 	render(){
 		//console.log('进来啦,layout-render');
 		const { selectedKeys, username, loginStatus } = this.state;
@@ -137,8 +149,9 @@ export default class BasicLayout extends Component {
 						<Menu
 							theme="dark"
 							mode="inline"
+							openKeys={this.state.openKeys}
+        					onOpenChange={(openKeys)=>this.onOpenChange(openKeys)}
 							selectedKeys={selectedKeys}
-							defaultOpenKeys={['sub1', 'sub2', 'sub3']}
 							onClick={({ item, key, keyPath })=>{this.changeSelectedKeys(item, key, keyPath)}}
 						>
 							<MenuItem key='1'><Link to='/' style={{color: '#fff'}}><Icon type="home" /><span>首页</span></Link></MenuItem>
